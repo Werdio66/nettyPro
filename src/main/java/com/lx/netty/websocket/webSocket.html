@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天</title>
+</head>
+<body>
+    <form>
+        <textarea id="sendtext" name="sendtext" style="width: 300px; height: 300px"></textarea>
+        <input type="button" value="发送消息" onclick="send(document.getElementById('sendtext').value)">
+        <textarea id="displaytext" name="displaytext" style="width: 300px; height: 300px"></textarea>
+        <input type="button" value="清空消息" onclick="document.getElementById('displaytext').val('')">
+    </form>
+</body>
+
+<script>
+    var socket;
+
+    if (window.WebSocket){
+
+        socket = new WebSocket("ws://localhost:8888/");
+        socket.onmessage = function (ev) {
+            console.log("onmessage");
+            var msg = document.getElementById("displaytext");
+            msg.value = msg.value + "\n" + ev.data;
+        }
+
+        socket.onopen = function (ev) {
+            console.log("onopen");
+
+            var msg = document.getElementById("displaytext");
+            msg.value = "连接开启";
+        }
+
+        socket.onclose = function (ev) {
+            console.log("onclose");
+            var msg = document.getElementById("displaytext");
+            msg.value = "连接关闭";
+        }
+
+        function send(msg) {
+            console.log("send " + msg);
+            if (socket.readyState == WebSocket.OPEN){
+                socket.send(msg);
+            }else {
+                console.log("连接未建立");
+            }
+        }
+    }
+
+
+</script>
+</html>
