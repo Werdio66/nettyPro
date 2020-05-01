@@ -1,5 +1,7 @@
-package com.lx.netty.inboundandoutbound;
+package com.lx.netty.tcp;
 
+import com.lx.netty.inboundandoutbound.MyByteToIntegerDecoder;
+import com.lx.netty.inboundandoutbound.MyIntegerToByteIncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -25,10 +27,6 @@ public class MyServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            // 解码器
-                            pipeline.addLast(new MyByteToIntegerDecoder());
-                            // 编码器
-                            pipeline.addLast(new MyIntegerToByteIncoder());
                             // 处理业务逻辑
                             pipeline.addLast(new MyServerHandler());
                         }

@@ -9,6 +9,8 @@ public class MyServerHandler extends SimpleChannelInboundHandler<Integer> {
     protected void channelRead0(ChannelHandlerContext ctx, Integer msg) throws Exception {
 
         System.out.println("客户端 => " + msg);
+
+        ctx.writeAndFlush(1234);
     }
 
     @Override
